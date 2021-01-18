@@ -1,12 +1,12 @@
-using Minerva.Server.DataAccessLayer.Enums;
-using Minerva.Server.DataAccessLayer.Models;
-using Minerva.Server.Entities;
+using Minerva.Server.Core.Contracts.Enums;
+using Minerva.Server.Core.Contracts.Models;
+using Minerva.Server.Core.Entities;
 
 namespace Minerva.Server.ItemImplementations.Base
 {
     public abstract class ItemImplementation
     {
-        public DataAccessLayer.Enums.ItemImplementationType Type { get; }
+        public ItemImplementationType Type { get; }
 
         public virtual bool OnBeforeUsed(ServerPlayer player)
         {

@@ -9,20 +9,21 @@ using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Minerva.Server.DataAccessLayer.Models;
 using Minerva.Server.DataAccessLayer.Services;
-using Minerva.Server.Entities;
 using Minerva.Server.Extensions;
-using Minerva.Server.Contracts.Configuration;
-using Minerva.Server.Contracts.ScriptStrategy;
+using Minerva.Server.Core.ScriptStrategy;
 using Microsoft.Extensions.Options;
+using Minerva.Server.Core.Configuration;
+using Minerva.Server.Core.Entities;
+using Minerva.Server.Core.Contracts.Enums;
+using Minerva.Server.Core.Contracts.Models;
 
 namespace Minerva.Server.Handlers
 {
     public class SessionHandler
         : IStartupSingletonScript
     {
-        private readonly Vector3 CharCreatorPedPosition = new Position(402.93603515625f, -996.7662963867188f, -99.00023651123047f);
+        private static readonly Vector3 CharCreatorPedPosition = new Position(402.93603515625f, -996.7662963867188f, -99.00023651123047f);
 
         private readonly AccountService _accountService;
         private readonly CharacterService _characterService;
@@ -49,11 +50,11 @@ namespace Minerva.Server.Handlers
             AltAsync.OnClient<ServerPlayer, int>("Session:RequestCharacterSpawn", OnRequestCharacterSpawnAsync);
             AltAsync.OnClient<ServerPlayer, string>("Session:CreateNewCharacter", OnCreateNewCharacterAsync);
             Alt.OnClient<ServerPlayer, Vector3>("RequestTeleport", OnRequestTeleport);
-
+            
             SpawnPoint = new Vector3(
-                gameOptions.Value.SpawnPoint.X, 
-                gameOptions.Value.SpawnPoint.Y, 
-                gameOptions.Value.SpawnPoint.Z);
+                gameOptions.Value.SpawnPointX, 
+                gameOptions.Value.SpawnPointY, 
+                gameOptions.Value.SpawnPointZ);
         }
 
         private async Task OnPlayerConnect(ServerPlayer player, string reason)
@@ -92,7 +93,7 @@ namespace Minerva.Server.Handlers
         {
             if (string.IsNullOrWhiteSpace(password))
             {
-                player.Notify("Du musst ein gültiges Passwort eingeben!", Enums.NotificationType.Error);
+                player.Notify("Du musst ein gültiges Passwort eingeben!", NotificationType.Error);
                 return;
             }
 

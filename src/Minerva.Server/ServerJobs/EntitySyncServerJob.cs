@@ -3,7 +3,7 @@ using AltV.Net.EntitySync;
 using AltV.Net.EntitySync.ServerEvent;
 using AltV.Net.EntitySync.SpatialPartitions;
 using Microsoft.Extensions.Logging;
-using Minerva.Server.ServerJobs.Base;
+using Minerva.Server.Core.ServerJobs;
 
 namespace Minerva.Server.ServerJobs
 {
@@ -22,12 +22,14 @@ namespace Minerva.Server.ServerJobs
             await Task.CompletedTask;
         }
 
-        public void OnShutdown()
+        public async Task OnShutdown()
         {
             AltEntitySync.Stop();
+
+            await Task.CompletedTask;
         }
 
-        public void OnStartup()
+        public async Task OnStartup()
         {
             // initialize EntitySync
             // docs: http://csharp.altv.mp/articles/entity-sync.html
@@ -41,6 +43,8 @@ namespace Minerva.Server.ServerJobs
                 new IdProvider());
 
             Logger.LogInformation("EntitySync initialized");
+
+            await Task.CompletedTask;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Minerva.Server.ServerJobs.Base;
+using Minerva.Server.Core.ServerJobs;
 
 namespace Minerva.Server.ServerJobs
 {
@@ -22,14 +22,18 @@ namespace Minerva.Server.ServerJobs
             });
         }
 
-        public void OnShutdown()
+        public async Task OnShutdown()
         {
             Logger.LogInformation("OnShutdown Demo");
+
+            await Task.CompletedTask;
         }
 
-        public void OnStartup()
+        public async Task OnStartup()
         {
             Logger.LogInformation("OnStartup Demo");
+
+            await Task.CompletedTask;
         }
     }
 }
